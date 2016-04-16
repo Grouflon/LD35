@@ -13,7 +13,7 @@ public class KeyboardInputController : InputController {
         Vector2 direction = new Vector2();
         if (Input.GetKey(upKey))
         {
-            direction.y += 1.0f;
+            direction.y -= 1.0f;
         }
 
         if (Input.GetKey(rightKey))
@@ -23,7 +23,7 @@ public class KeyboardInputController : InputController {
 
         if (Input.GetKey(downKey))
         {
-            direction.y -= 1.0f;
+            direction.y += 1.0f;
         }
 
         if (Input.GetKey(leftKey))
