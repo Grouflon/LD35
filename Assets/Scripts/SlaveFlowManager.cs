@@ -5,7 +5,6 @@ public class SlaveFlowManager : MonoBehaviour
     public const int WAIT_TIME = 120;
     public const int MAX_SLAVES = 150;
     private int remainingSlaves = MAX_SLAVES;
-    public Vector2 spawnPosition;
     public GameObject slavePrefab;
     private int waitCounter;
     public ChariotController chariot;
@@ -29,7 +28,7 @@ public class SlaveFlowManager : MonoBehaviour
     public void SpawnSlave()
     {
         remainingSlaves -= 1;
-        GameObject slaveGO = (GameObject)Instantiate(slavePrefab, spawnPosition, Quaternion.identity);
+        GameObject slaveGO = (GameObject)Instantiate(slavePrefab, transform.position, Quaternion.identity);
         SlaveController slave = slaveGO.GetComponent<SlaveController>();
         if (slave != null)
         {
