@@ -47,6 +47,7 @@ public class ChariotController : MonoBehaviour {
  
     void MoveChariot(Vector3 chariotDirection)
     {
+        chariotPosition = transform.position;
         chariotPosition += chariotDirection;
         this.transform.position = chariotPosition;
     }
