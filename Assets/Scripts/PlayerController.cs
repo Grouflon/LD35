@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     public GameObject chariotGO;
     public InputController inputController;
+    public float recoverTime;
 
 	void Start ()
     {
@@ -27,11 +28,18 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            m_currentPower = GameObject.Instantiate(m_powerManager.powerTemplates[0]);
-            m_currentPower.source = chariotGO;
+            m_recoverTimer += Time.deltaTime;
+
+            if (m_recoverTimer > recoverTime)
+            {
+                m_currentPower = GameObject.Instantiate(m_powerManager.powerTemplates[0]);
+                m_currentPower.source = chariotGO;
+                m_recoverTimer = 0.0f;
+            }
         }
 	}
 
+    private float m_recoverTimer = 0.0f;
     private PowerManager m_powerManager;
     private Power m_currentPower = null;
 }
