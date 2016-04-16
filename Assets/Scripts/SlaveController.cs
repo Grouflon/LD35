@@ -8,7 +8,6 @@ public class SlaveController : MonoBehaviour
     public Vector2 targetPosition;
     public ChariotController masterChariot;
     public int strength;
-    public const int MAX_SLAVES = 150;
 
     void Start()
     {
@@ -21,11 +20,6 @@ public class SlaveController : MonoBehaviour
         MoveSlaveAss();
     }
 
-    void SpawnSlave()
-    {
-        // spawn slave in spawn zone 
-    }
-
     void MoveSlaveAss()
     {
         Vector2 newDirection = targetPosition - slavePosition;
@@ -33,6 +27,17 @@ public class SlaveController : MonoBehaviour
         slavePosition += newDirection;
         SlaveGO.transform.position = slavePosition;
     }
+
+    void OnTriggerEnter(Collider powerCollider)
+    {
+        //
+    }
+
+    void DestroySlave()
+    {
+        Destroy(this.gameObject, 0.3f);
+    }
+
 
 
 
