@@ -57,7 +57,7 @@ public class ChariotController : MonoBehaviour {
         chariotGO.transform.position = chariotPosition;
     }
 
-    void SendSlaveToWork(SlaveController sc)
+    public void SendSlaveToWork(SlaveController sc)
     {
         // Determine wether the slave should be sent left or right
         if (leftWorkForce < rightWorkForce)
