@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SlaveController : MonoBehaviour
 {
-    public GameObject SlaveGO;
     public Vector2 slavePosition;
     public Vector2 targetPosition;
     public ChariotController masterChariot;
@@ -25,7 +24,7 @@ public class SlaveController : MonoBehaviour
         Vector2 newDirection = targetPosition - slavePosition;
         newDirection.Normalize();
         slavePosition += newDirection;
-        SlaveGO.transform.position = slavePosition;
+        this.transform.position = slavePosition;
     }
 
     void OnTriggerEnter(Collider powerCollider)
