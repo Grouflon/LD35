@@ -3,33 +3,30 @@ using System.Collections;
 
 public class ChariotController : MonoBehaviour {
 
-    public Vector2 chariotPosition;
+    public Vector3 chariotPosition;
     private float forwardSpeed;
     private float lateralSpeed;
 
-    public Collider buttZone;
-    public Collider leftZone;
-    public Collider rightZone;
-
-    public int leftWorkForce;
-    public int rightWorkForce;
-
-    public Vector2 initialPosition;
+    public ButtZone buttZone;
+    public Zone leftZone;
+    public Zone rightZone;
 
     // Use this for initialization
 
     void Start ()
     {
-        chariotPosition = initialPosition;
         forwardSpeed = 0f;
 	}
+
 	
 	// Update is called once per frame
 	void FixedUpdate ()
     {
         // Evaluate Chariot Speed
-        forwardSpeed = leftWorkForce + rightWorkForce;
-        lateralSpeed = rightWorkForce - leftWorkForce;
+        forwardSpeed = leftZone.slaveCount + rightZone.slaveCount;
+        lateralSpeed = rightZone.slaveCount - leftZone.slaveCount;
+
+        Debug.Log("forward speed : " + forwardSpeed);
 
         if (forwardSpeed > 100)
         {
@@ -46,11 +43,11 @@ public class ChariotController : MonoBehaviour {
         }
 
         // Move Chariot according to speed  
-        Vector2 velocity = new Vector2(forwardSpeed / 10f, lateralSpeed / 10f);
+        Vector3 velocity = new Vector3(lateralSpeed / 10f, 0, forwardSpeed / 10f );
         MoveChariot(velocity);
 	}
  
-    void MoveChariot(Vector2 chariotDirection)
+    void MoveChariot(Vector3 chariotDirection)
     {
         chariotPosition += chariotDirection;
         this.transform.position = chariotPosition;
@@ -59,7 +56,7 @@ public class ChariotController : MonoBehaviour {
     public void SendSlaveToWork(SlaveController sc)
     {
         // Determine wether the slave should be sent left or right
-        if (leftWorkForce < rightWorkForce)
+        if (leftZone.slaveCount < rightZone.slaveCount)
         {
             sc.targetPosition = leftZone.transform.position;
         }
