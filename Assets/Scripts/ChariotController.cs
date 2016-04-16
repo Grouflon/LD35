@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ChariotController : MonoBehaviour {
 
-    public GameObject chariotGO;
     public Vector2 chariotPosition;
     private float forwardSpeed;
     private float lateralSpeed;
@@ -54,7 +53,7 @@ public class ChariotController : MonoBehaviour {
     void MoveChariot(Vector2 chariotDirection)
     {
         chariotPosition += chariotDirection;
-        chariotGO.transform.position = chariotPosition;
+        this.transform.position = chariotPosition;
     }
 
     public void SendSlaveToWork(SlaveController sc)
