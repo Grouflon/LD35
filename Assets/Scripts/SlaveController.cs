@@ -3,8 +3,8 @@ using System.Collections;
 
 public class SlaveController : MonoBehaviour
 {
-    public Vector2 slavePosition;
-    public Vector2 targetPosition;
+    public Vector3 slavePosition;
+    public Vector3 targetPosition;
     public ChariotController masterChariot;
     public int strength;
 
@@ -21,9 +21,15 @@ public class SlaveController : MonoBehaviour
 
     void MoveSlaveAss()
     {
-        Vector2 newDirection = targetPosition - slavePosition;
+        Vector3 newDirection = targetPosition - slavePosition;
         newDirection.Normalize();
+        newDirection.z = newDirection.z * strength * 0.03f;
+        newDirection.z += Random.Range(-1, 1) * newDirection.z * 0.3f;
+        newDirection.x = newDirection.x * strength * 0.03f;
+        newDirection.x += Random.Range(-1, 1) * newDirection.x * 0.3f;
+        newDirection.y = 0f;
         slavePosition += newDirection;
+        //vector3.Value = new Vector3(vector2.Value.x,vector2.Value.y,zValue.Value);
         this.transform.position = slavePosition;
     }
 

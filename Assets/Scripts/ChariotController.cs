@@ -26,8 +26,6 @@ public class ChariotController : MonoBehaviour {
         forwardSpeed = leftZone.slaveCount + rightZone.slaveCount;
         lateralSpeed = rightZone.slaveCount - leftZone.slaveCount;
 
-        Debug.Log("forward speed : " + forwardSpeed);
-
         if (forwardSpeed > 100)
         {
             forwardSpeed = 100;
