@@ -31,10 +31,7 @@ public class KeyboardInputController : InputController {
             direction.x -= 1.0f;
         }
 
-        if (direction.x != 0 && direction.y != 0)
-        {
-            direction.Normalize();
-        }
+        direction.Normalize();
         return direction;
     }
 }

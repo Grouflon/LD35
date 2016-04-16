@@ -11,10 +11,7 @@ public class GamepadInputController : InputController {
         direction.x = Input.GetAxis("Horizontal" + gamepadId);
         direction.y = Input.GetAxis("Vertical" + gamepadId);
 
-        if (direction.x != 0 && direction.y != 0)
-        {
-            direction.Normalize();
-        }
+        direction.Normalize();
         return direction;
     }
 }
