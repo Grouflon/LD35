@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour {
             if (m_recoverTimer > recoverTime)
             {
                 m_currentPower = GameObject.Instantiate(m_powerManager.powerTemplates[0]);
+
                 m_currentPower.source = chariotGO;
                 m_recoverTimer = 0.0f;
             }
