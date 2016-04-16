@@ -3,40 +3,58 @@ using System.Collections;
 
 public class SlaveController : MonoBehaviour
 {
-    public Vector3 slavePosition;
-    public Vector3 targetPosition;
+    public Zone targetZone;
     public ChariotController masterChariot;
     public int strength;
+    public int isWorking;
 
     void Start()
     {
         strength = 1;
-        targetPosition = masterChariot.buttZone.transform.position;
+        targetZone = masterChariot.buttZone;
     }
 
     void Update()
     {
-        MoveSlaveAss();
+        // Determine target zone
+        if (isWorking == 0)
+        {
+            targetZone = masterChariot.buttZone;
+        }
+        else if (isWorking == -1)
+        {
+            targetZone = masterChariot.leftZone;
+        }
+        else if (isWorking == 1)
+        {
+            targetZone = masterChariot.rightZone;
+        }
+
+        // Move
+        Vector3 target = targetZone.transform.position;
+        MoveSlaveAss(target);
+        
     }
 
-    void MoveSlaveAss()
+    void MoveSlaveAss(Vector3 target)
     {
-        Vector3 newDirection = targetPosition - slavePosition;
-        newDirection.Normalize();
-        newDirection.z = newDirection.z * strength * 0.03f;
-        newDirection.z += Random.Range(-1, 1) * newDirection.z * 0.3f;
-        newDirection.x = newDirection.x * strength * 0.03f;
-        newDirection.x += Random.Range(-1, 1) * newDirection.x * 0.3f;
+        // Set Move direction
+        Vector3 slavePosition = this.transform.position;
+        Vector3 newDirection = target - slavePosition;
         newDirection.y = 0f;
+
+        // Compute new position
+        newDirection.Normalize();
+        newDirection.z = newDirection.z * strength * Time.deltaTime;
+        newDirection.z += Random.Range(-0.6f, 0.6f) * newDirection.z;
+        newDirection.x = newDirection.x * strength * Time.deltaTime;
+        newDirection.x += Random.Range(-0.6f, 0.6f) * newDirection.x;
         slavePosition += newDirection;
-        //vector3.Value = new Vector3(vector2.Value.x,vector2.Value.y,zValue.Value);
+
+        // Go there
         this.transform.position = slavePosition;
     }
 
-    void OnTriggerEnter(Collider powerCollider)
-    {
-        //
-    }
 
     void DestroySlave()
     {

@@ -40,8 +40,11 @@ public class ChariotController : MonoBehaviour {
             lateralSpeed = -50;
         }
 
+        forwardSpeed = forwardSpeed / 50f;
+        lateralSpeed = lateralSpeed / 50f;
+
         // Move Chariot according to speed  
-        Vector3 velocity = new Vector3(lateralSpeed / 10f, 0, forwardSpeed / 10f );
+        Vector3 velocity = new Vector3(lateralSpeed *Time.deltaTime, 0f, forwardSpeed *Time.deltaTime );
         MoveChariot(velocity);
 	}
  
@@ -57,11 +60,13 @@ public class ChariotController : MonoBehaviour {
         // Determine wether the slave should be sent left or right
         if (leftZone.slaveCount < rightZone.slaveCount)
         {
-            sc.targetPosition = leftZone.transform.position;
+            //sc.targetZone = leftZone;
+            sc.isWorking = -1;
         }
         else
         {
-            sc.targetPosition = rightZone.transform.position;
+            //sc.targetZone = rightZone;
+            sc.isWorking = 1;
         }
     }
 
