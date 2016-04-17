@@ -69,37 +69,52 @@ public class Zone : MonoBehaviour
     void OnTriggerEnter(Collider slaveCollider)
     {
         SlaveController sc = slaveCollider.gameObject.GetComponent<SlaveController>();
-        if (sc != null && this.side != 0 && !registeredSlaves.Contains(sc))
+        if (sc != null)
         {
-            // Update workforce
-            registeredSlaves.Add(sc);
-            slaveCount += sc.strength;
-
-            //Debug.Log("Slave enters zone " + side);
-
-            // Select a free spot for the slave or send him back to buttzone
-            for (int s=0; s<spots.Count; s++)
+            if (sc.playerID != chariot.playerID) // KILL ENEMIES
             {
-                if (spots[s].isFreeSpot)
+                sc.DestroySlave(new Vector3(0f, 0f, 0f));
+            }
+            else
+            {
+                if (this.side != 0 && !registeredSlaves.Contains(sc))
                 {
-                    sc.targetZone = spots[s].spotGO;
-                    sc.isWorking = side;
-                    spots[s].ToggleSpot(sc);
-                    break;
+                    // Update workforce
+                    registeredSlaves.Add(sc);
+                    slaveCount += sc.strength;
+
+                    //Debug.Log("Slave enters zone " + side);
+
+                    // Select a free spot for the slave or send him back to buttzone
+                    for (int s = 0; s < spots.Count; s++)
+                    {
+                        if (spots[s].isFreeSpot)
+                        {
+                            sc.targetZone = spots[s].spotGO;
+                            sc.currentZone = this;
+                            sc.isWorking = side;
+                            spots[s].ToggleSpot(sc);
+                            break;
+                        }
+                    }
+                }
+                else if (this.side == 0 && sc.isWorking == 0)
+                {
+                    chariot.SendSlaveToWork(sc);
+                    //Debug.Log("Slave sent to work");
                 }
             }
-        }
-        else if (sc != null && this.side==0 && sc.isWorking == 0)
-        {
-            chariot.SendSlaveToWork(sc);
-            //Debug.Log("Slave sent to work");
         }
     }
 
     void OnTriggerExit(Collider slaveCollider)
     {
         SlaveController sc = slaveCollider.gameObject.GetComponent<SlaveController>();
-        ExitSlave(sc);
+        if ( sc !=null && sc.currentZone == this)
+        {
+            sc.currentZone = null;
+            ExitSlave(sc);
+        }
     }
 
     public void ExitSlave(SlaveController sc)

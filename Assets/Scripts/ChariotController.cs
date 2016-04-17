@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ChariotController : MonoBehaviour {
 
+    public int playerID;
     public Vector3 chariotPosition;
     private float forwardSpeed;
     private float lateralSpeed;
@@ -26,7 +27,7 @@ public class ChariotController : MonoBehaviour {
     {
         // Evaluate Chariot Speed
         forwardSpeed = leftZone.slaveCount + rightZone.slaveCount;
-        lateralSpeed = rightZone.slaveCount - leftZone.slaveCount;
+        lateralSpeed = leftZone.slaveCount - rightZone.slaveCount;
 
         if (forwardSpeed > MAX_SPOTS*2)
         {

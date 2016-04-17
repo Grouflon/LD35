@@ -3,6 +3,7 @@ using System.Collections;
 
 public class SlaveController : MonoBehaviour
 {
+    public int playerID;
     public GameObject targetZone;
     public ChariotController masterChariot;
     public Zone currentZone;
@@ -64,7 +65,7 @@ public class SlaveController : MonoBehaviour
         }
     }
 
-    void DestroySlave(Vector3 _direction)
+    public void DestroySlave(Vector3 _direction)
     {
         m_isDead = true;
         Rigidbody rigidbody = GetComponent<Rigidbody>();
@@ -74,8 +75,11 @@ public class SlaveController : MonoBehaviour
 
         gameObject.GetComponentInChildren<Billboard>().enabled = false;
 
-	currentZone.ExitSlave(this);
-        Destroy(this.gameObject, deathTime);
+        if(currentZone != null)
+        {
+            currentZone.ExitSlave(this);
+        }
+        Destroy(this);
     }
 
     void OnTriggerEnter(Collider other)
