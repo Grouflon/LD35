@@ -10,9 +10,12 @@ public class FireballPower : Power {
     public float maxSpeed = 10.0f;
     public float minSpeed = 2.0f;
     public float castTime = 3.0f;
+    public float targetStartSpeed = 10.0f;
+    public float targetEndSpeed = 60.0f;
 
     public FireballProjectileController projectilePrefab;
     public Text textPrefab;
+    public GroundTargetController groundTargetPrefab;
 
     public FireballPower()
     {
@@ -28,9 +31,14 @@ public class FireballPower : Power {
         m_targetVelocity.x = Mathf.Cos(randAngle) * minSpeed;
         m_targetVelocity.y = Mathf.Sin(randAngle) * minSpeed;
 
+        m_groundTarget = (GroundTargetController)Instantiate(groundTargetPrefab, m_target, Quaternion.identity);
+        Vector3 scale = m_groundTarget.transform.localScale;
+        scale.x = scale.z = radius;
+        m_groundTarget.transform.localScale = scale * 2.0f;
+
         GameObject UI = GameObject.Find("_UI");
         m_castTimerText = Instantiate(textPrefab);
-        m_castTimerText.rectTransform.parent = UI.transform;
+        m_castTimerText.rectTransform.SetParent(UI.transform);
         //m_castTimerText.fontSize = 30;
         m_castTimerText.fontStyle = FontStyle.Bold;
     }
@@ -84,6 +92,12 @@ public class FireballPower : Power {
                         m_castTimerText.rectTransform.position = screenPoint;
                         m_castTimerText.text = "" + (int)Mathf.Ceil(castTime - m_castTimer);
                     }
+
+                    m_groundTarget.angularSpeed = (targetEndSpeed - targetStartSpeed) * (m_castTimer / castTime);
+                    Vector3 targetPosition = m_groundTarget.transform.position;
+                    targetPosition = m_target;
+                    targetPosition.y = 0.01f;
+                    m_groundTarget.transform.position = targetPosition;
                 }
                 break;
 
@@ -92,8 +106,11 @@ public class FireballPower : Power {
                     Vector3 sourcePosition = source.transform.position;
                     sourcePosition.y = 0.0f;
                     GameObject projectileInstance = (GameObject)GameObject.Instantiate(projectilePrefab.gameObject, sourcePosition, Quaternion.identity);
-                    projectileInstance.GetComponent<FireballProjectileController>().target = m_target;
+                    FireballProjectileController projectileController = projectileInstance.GetComponent<FireballProjectileController>();
+                    projectileController.target = m_target;
                     projectileInstance.transform.localScale = new Vector3(radius, radius, radius) * 2.0f;
+
+                    m_groundTarget.FadeOut(projectileController.flightTime + 0.5f);
 
                     m_state = CastState.Finished;
                 }
@@ -104,15 +121,9 @@ public class FireballPower : Power {
         }
 	}
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(m_target, radius);
-        Debug.DrawLine(m_target, m_target + new Vector3(m_targetVelocity.x, 0.0f, m_targetVelocity.y));
-    }
-
     private float m_castTimer = 0.0f;
     private Vector2 m_targetVelocity;
     private Vector3 m_target;
     private Text m_castTimerText;
+    private GroundTargetController m_groundTarget;
 }
