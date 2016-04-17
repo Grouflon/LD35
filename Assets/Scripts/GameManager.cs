@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     public PlayerController playerControllerPrefab;
     public GameObject chariotPrefab;
     public SlaveFlowManager slaveFlowManagerPrefab;
+    public GameObject finishLinePrefab;
 
 
     void Start()
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour {
 
             ++i;
         }
+
+        Instantiate(finishLinePrefab, new Vector3(0.0f, 0.01f, gameZone.bounds.max.z), Quaternion.identity);
 	}
 	
 
