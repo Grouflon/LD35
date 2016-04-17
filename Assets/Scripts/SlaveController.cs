@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SlaveController : MonoBehaviour
 {
-    public Zone targetZone;
+    public GameObject targetZone;
     public ChariotController masterChariot;
     public int strength;
     public int isWorking;
@@ -11,7 +11,7 @@ public class SlaveController : MonoBehaviour
     void Start()
     {
         strength = 1;
-        targetZone = masterChariot.buttZone;
+        targetZone = masterChariot.buttZone.gameObject;
     }
 
     void Update()
@@ -19,16 +19,17 @@ public class SlaveController : MonoBehaviour
         // Determine target zone
         if (isWorking == 0)
         {
-            targetZone = masterChariot.buttZone;
+            targetZone = masterChariot.buttZone.gameObject;
         }
-        else if (isWorking == -1)
+        else if (isWorking == -1 && targetZone.GetComponent<Zone>()!=null)// worker is not assigned to a spot yet
         {
-            targetZone = masterChariot.leftZone;
+            targetZone = masterChariot.leftZone.gameObject;
         }
-        else if (isWorking == 1)
+        else if (isWorking == 1 && targetZone.GetComponent<Zone>() != null)// worker is not assigned to a spot yet
         {
-            targetZone = masterChariot.rightZone;
+            targetZone = masterChariot.rightZone.gameObject;
         }
+        // else if the slave is already assigned to a spot, its target does not change
 
         // Move
         Vector3 target = targetZone.transform.position;
