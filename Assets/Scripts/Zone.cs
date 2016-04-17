@@ -5,6 +5,7 @@ public class Zone : MonoBehaviour
     public Collider zoneCollider;
     public int slaveCount;
     public ChariotController chariot;
+    public string side;
 
     void OnTriggerEnter(Collider slaveCollider)
     {
@@ -12,6 +13,7 @@ public class Zone : MonoBehaviour
         if (sc != null)
         {
             slaveCount += sc.strength;
+            //Debug.Log("Slave added to " + this);
         }
     }
 
@@ -21,6 +23,7 @@ public class Zone : MonoBehaviour
         if (sc != null)
         {
             slaveCount -= sc.strength;
+            //Debug.Log("Slave removed from " + this);
         }
     }
 
