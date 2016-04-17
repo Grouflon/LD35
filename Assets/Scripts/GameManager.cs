@@ -25,10 +25,12 @@ public class GameManager : MonoBehaviour {
 
             Vector3 chariotPosition = new Vector3(gameZone.bounds.min.x + (i + 1) * horizontalStep, 0.0f, gameZone.bounds.min.z);
             GameObject chariot = (GameObject)GameObject.Instantiate(chariotPrefab, chariotPosition, Quaternion.identity);
+            chariot.GetComponent<ChariotController>().playerID = i;
             controller.chariotGO = chariot;
 
             SlaveFlowManager spawner = (SlaveFlowManager)GameObject.Instantiate(slaveFlowManagerPrefab, chariotPosition - new Vector3(0.0f, 0.0f, 2.0f), Quaternion.identity);
             spawner.chariot = chariot.GetComponent<ChariotController>();
+            spawner.playerID = i;
 
             ++i;
         }

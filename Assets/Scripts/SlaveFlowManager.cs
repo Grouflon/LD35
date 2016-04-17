@@ -8,6 +8,7 @@ public class SlaveFlowManager : MonoBehaviour
     public GameObject slavePrefab;
     private int waitCounter;
     public ChariotController chariot;
+    public int playerID;
 
     void Start()
     {
@@ -28,8 +29,11 @@ public class SlaveFlowManager : MonoBehaviour
     public void SpawnSlave()
     {
         remainingSlaves -= 1;
-        GameObject slaveGO = (GameObject)Instantiate(slavePrefab, transform.position, Quaternion.identity);
+        Vector3 spawnPosition = transform.position;
+        spawnPosition.x += Random.Range(-3f, 3f);
+        GameObject slaveGO = (GameObject)Instantiate(slavePrefab, spawnPosition, Quaternion.identity);
         SlaveController slave = slaveGO.GetComponent<SlaveController>();
+        slave.playerID = this.playerID;
         if (slave != null)
         {
             slave.masterChariot = chariot;
