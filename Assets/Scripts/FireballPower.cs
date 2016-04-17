@@ -38,7 +38,7 @@ public class FireballPower : Power {
 
         GameObject UI = GameObject.Find("_UI");
         m_castTimerText = Instantiate(textPrefab);
-        m_castTimerText.rectTransform.parent = UI.transform;
+        m_castTimerText.rectTransform.SetParent(UI.transform);
         //m_castTimerText.fontSize = 30;
         m_castTimerText.fontStyle = FontStyle.Bold;
     }
