@@ -5,6 +5,7 @@ public class SlaveController : MonoBehaviour
 {
     public GameObject targetZone;
     public ChariotController masterChariot;
+    public Zone currentZone;
     public int strength;
     public int isWorking;
 
@@ -21,7 +22,7 @@ public class SlaveController : MonoBehaviour
         {
             targetZone = masterChariot.buttZone.gameObject;
         }
-        else if (isWorking == -1 && targetZone.GetComponent<Zone>()!=null)// worker is not assigned to a spot yet
+        else if (isWorking == -1 && targetZone.GetComponent<Zone>() != null)// worker is not assigned to a spot yet
         {
             targetZone = masterChariot.leftZone.gameObject;
         }
@@ -29,12 +30,14 @@ public class SlaveController : MonoBehaviour
         {
             targetZone = masterChariot.rightZone.gameObject;
         }
-        // else if the slave is already assigned to a spot, its target does not change
+        else // else if the slave is already assigned to a spot, its target does not change
+        {
+            //Debug.Log("Slave " + this.gameObject + "successfully assigned to a spot");
+        }
 
         // Move
         Vector3 target = targetZone.transform.position;
         MoveSlaveAss(target);
-        
     }
 
     void MoveSlaveAss(Vector3 target)
@@ -56,10 +59,10 @@ public class SlaveController : MonoBehaviour
         this.transform.position = slavePosition;
     }
 
-
     void DestroySlave()
     {
-        Destroy(this.gameObject, 0.3f);
+        currentZone.ExitSlave(this);
+        Destroy(this.gameObject, 0.6f);
     }
 
 

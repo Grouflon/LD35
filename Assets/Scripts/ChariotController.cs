@@ -7,7 +7,7 @@ public class ChariotController : MonoBehaviour {
     private float forwardSpeed;
     private float lateralSpeed;
 
-    public ButtZone buttZone;
+    public Zone buttZone;
     public Zone leftZone;
     public Zone rightZone;
 
@@ -42,8 +42,8 @@ public class ChariotController : MonoBehaviour {
             lateralSpeed = -MAX_SPOTS;
         }
 
-        forwardSpeed = forwardSpeed / (MAX_SPOTS*2);
-        lateralSpeed = lateralSpeed / (MAX_SPOTS*2);
+        forwardSpeed = forwardSpeed / (MAX_SPOTS*3);
+        lateralSpeed = lateralSpeed / (MAX_SPOTS*4);
 
         // Move Chariot according to speed  
         Vector3 velocity = new Vector3(lateralSpeed *Time.deltaTime, 0f, forwardSpeed *Time.deltaTime );

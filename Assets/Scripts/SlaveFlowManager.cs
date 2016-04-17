@@ -2,8 +2,8 @@
 
 public class SlaveFlowManager : MonoBehaviour
 {
-    public const int WAIT_TIME = 150;
-    public const int MAX_SLAVES = 30;
+    public const int WAIT_TIME = 60;
+    public const int MAX_SLAVES = 150;
     private int remainingSlaves = MAX_SLAVES;
     public GameObject slavePrefab;
     private int waitCounter;
