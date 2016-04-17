@@ -11,6 +11,8 @@ public class ChariotController : MonoBehaviour {
     public Zone leftZone;
     public Zone rightZone;
 
+    public const int MAX_SPOTS = 20; // on each side of the chariot, has to be a multiple of 4
+
     // Use this for initialization
 
     void Start ()
@@ -26,22 +28,22 @@ public class ChariotController : MonoBehaviour {
         forwardSpeed = leftZone.slaveCount + rightZone.slaveCount;
         lateralSpeed = rightZone.slaveCount - leftZone.slaveCount;
 
-        if (forwardSpeed > 100)
+        if (forwardSpeed > MAX_SPOTS*2)
         {
-            forwardSpeed = 100;
+            forwardSpeed = MAX_SPOTS*2;
         }
 
-        if (lateralSpeed > 50)
+        if (lateralSpeed > MAX_SPOTS)
         {
-            lateralSpeed = 50;
+            lateralSpeed = MAX_SPOTS;
         }
-        else if (lateralSpeed < -50)
+        else if (lateralSpeed < -MAX_SPOTS)
         {
-            lateralSpeed = -50;
+            lateralSpeed = -MAX_SPOTS;
         }
 
-        forwardSpeed = forwardSpeed / 50f;
-        lateralSpeed = lateralSpeed / 50f;
+        forwardSpeed = forwardSpeed / (MAX_SPOTS*2);
+        lateralSpeed = lateralSpeed / (MAX_SPOTS*2);
 
         // Move Chariot according to speed  
         Vector3 velocity = new Vector3(lateralSpeed *Time.deltaTime, 0f, forwardSpeed *Time.deltaTime );

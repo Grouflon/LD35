@@ -2,6 +2,10 @@
 
 public class ButtZone : Zone
 {
+    void Start()
+    {
+        side = 0;
+    }
 
     void OnTriggerEnter(Collider slaveCollider)
     {
