@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject chariotGO;
     public InputController inputController;
     public float recoverTime;
+    public int id = -1;
 
 	void Start ()
     {

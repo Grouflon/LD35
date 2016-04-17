@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class FireballPower : Power {
@@ -10,7 +11,8 @@ public class FireballPower : Power {
     public float minSpeed = 2.0f;
     public float castTime = 3.0f;
 
-    public FireballProjectileController projectile;
+    public FireballProjectileController projectilePrefab;
+    public Text textPrefab;
 
     public FireballPower()
     {
@@ -25,6 +27,12 @@ public class FireballPower : Power {
         float randAngle = Random.Range(0.0f, Mathf.PI * 2.0f);
         m_targetVelocity.x = Mathf.Cos(randAngle) * minSpeed;
         m_targetVelocity.y = Mathf.Sin(randAngle) * minSpeed;
+
+        GameObject UI = GameObject.Find("_UI");
+        m_castTimerText = Instantiate(textPrefab);
+        m_castTimerText.rectTransform.parent = UI.transform;
+        //m_castTimerText.fontSize = 30;
+        m_castTimerText.fontStyle = FontStyle.Bold;
     }
 	
 	void Update()
@@ -34,6 +42,11 @@ public class FireballPower : Power {
         if (m_castTimer > castTime)
         {
             m_state = CastState.Casting;
+            if (m_castTimerText != null)
+            {
+                GameObject.Destroy(m_castTimerText.gameObject);
+                m_castTimerText = null;
+            }
         }
 
 
@@ -65,12 +78,11 @@ public class FireballPower : Power {
                     m_target.x += m_targetVelocity.x * Time.deltaTime;
                     m_target.z += m_targetVelocity.y * Time.deltaTime;
 
-                    
-
-                    // CAST
-                    if (m_castTimer > castTime)
+                    if (m_castTimerText)
                     {
-
+                        Vector3 screenPoint = Camera.main.WorldToScreenPoint(m_target);
+                        m_castTimerText.rectTransform.position = screenPoint;
+                        m_castTimerText.text = "" + (int)Mathf.Ceil(castTime - m_castTimer);
                     }
                 }
                 break;
@@ -79,8 +91,9 @@ public class FireballPower : Power {
                 {
                     Vector3 sourcePosition = source.transform.position;
                     sourcePosition.y = 0.0f;
-                    GameObject projectileInstance = (GameObject)GameObject.Instantiate(projectile.gameObject, sourcePosition, Quaternion.identity);
+                    GameObject projectileInstance = (GameObject)GameObject.Instantiate(projectilePrefab.gameObject, sourcePosition, Quaternion.identity);
                     projectileInstance.GetComponent<FireballProjectileController>().target = m_target;
+                    projectileInstance.transform.localScale = new Vector3(radius, radius, radius) * 2.0f;
 
                     m_state = CastState.Finished;
                 }
@@ -101,4 +114,5 @@ public class FireballPower : Power {
     private float m_castTimer = 0.0f;
     private Vector2 m_targetVelocity;
     private Vector3 m_target;
+    private Text m_castTimerText;
 }

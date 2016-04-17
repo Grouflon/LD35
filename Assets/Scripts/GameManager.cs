@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
             float horizontalStep = gameZone.bounds.size.x / (players.Length + 1);
 
             PlayerController controller = (PlayerController)GameObject.Instantiate(playerControllerPrefab);
+            controller.id = i;
             controller.inputController = input;
 
             Vector3 chariotPosition = new Vector3(gameZone.bounds.min.x + (i + 1) * horizontalStep, 0.0f, gameZone.bounds.min.z);
