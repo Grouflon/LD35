@@ -3,7 +3,6 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-    public GameObject chariotGO;
     public float recoverTime;
     public PlayerDescription playerDescription;
 
@@ -30,7 +29,7 @@ public class PlayerController : MonoBehaviour {
             {
                 m_currentPower = GameObject.Instantiate(m_powerManager.powerTemplates[0]);
                 m_currentPower.playerDescription = playerDescription;
-                m_currentPower.source = chariotGO;
+                m_currentPower.source = playerDescription.chariot.gameObject;
                 m_recoverTimer = 0.0f;
             }
         }

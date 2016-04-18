@@ -2,9 +2,11 @@
 using System.Collections;
 
 [System.Serializable]
-public struct PlayerDescription
+public class PlayerDescription
 {
     [HideInInspector] public int id;
+    [HideInInspector] public ChariotController chariot;
+    [HideInInspector] public SlaveFlowManager spawner;
     public Color color;
     public InputController input;
 }
@@ -30,15 +32,16 @@ public class GameManager : MonoBehaviour {
             float horizontalStep = gameZone.bounds.size.x / (players.Length + 1);
 
             PlayerController controller = (PlayerController)GameObject.Instantiate(playerControllerPrefab);
-            controller.playerDescription = desc;
 
             Vector3 chariotPosition = new Vector3(gameZone.bounds.min.x + (i + 1) * horizontalStep, 0.0f, gameZone.bounds.min.z);
             GameObject chariot = (GameObject)GameObject.Instantiate(chariotPrefab, chariotPosition, Quaternion.identity);
-            chariot.GetComponent<ChariotController>().playerDescription = desc;
-            controller.chariotGO = chariot;
+            desc.chariot = chariot.GetComponent<ChariotController>();
 
             SlaveFlowManager spawner = (SlaveFlowManager)GameObject.Instantiate(slaveFlowManagerPrefab, chariotPosition - new Vector3(0.0f, 0.0f, 2.0f), Quaternion.identity);
-            spawner.chariot = chariot.GetComponent<ChariotController>();
+            desc.spawner = spawner;
+
+            desc.chariot.playerDescription = desc;
+            controller.playerDescription = desc;
             spawner.playerDescription = desc;
         }
 
@@ -48,6 +51,12 @@ public class GameManager : MonoBehaviour {
 
 	void Update()
     {
-	
+	    foreach (PlayerDescription player in players)
+        {
+            if (player.chariot.gameObject.transform.position.z >= gameZone.bounds.max.z)
+            {
+                Debug.Log("Player " + player.id + " Wins !");
+            }
+        }
 	}
 }

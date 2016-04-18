@@ -7,7 +7,6 @@ public class SlaveFlowManager : MonoBehaviour
     private int remainingSlaves = MAX_SLAVES;
     public GameObject slavePrefab;
     private int waitCounter;
-    public ChariotController chariot;
     public PlayerDescription playerDescription;
 
     void Start()
@@ -36,7 +35,7 @@ public class SlaveFlowManager : MonoBehaviour
         slave.playerID = playerDescription.id;
         if (slave != null)
         {
-            slave.masterChariot = chariot;
+            slave.masterChariot = playerDescription.chariot;
         }
         else
         {
