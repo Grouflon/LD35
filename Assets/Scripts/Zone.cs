@@ -71,7 +71,7 @@ public class Zone : MonoBehaviour
         SlaveController sc = slaveCollider.gameObject.GetComponent<SlaveController>();
         if (sc != null)
         {
-            if (sc.playerID != chariot.playerID) // KILL ENEMIES
+            if (sc.playerID != chariot.playerDescription.id) // KILL ENEMIES
             {
                 sc.DestroySlave(new Vector3(0f, 0f, 0f));
             }

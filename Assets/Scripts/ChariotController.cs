@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ChariotController : MonoBehaviour {
 
-    public int playerID;
+    public PlayerDescription playerDescription;
     public Vector3 chariotPosition;
     private float forwardSpeed;
     private float lateralSpeed;

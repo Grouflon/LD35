@@ -35,6 +35,7 @@ public class FireballPower : Power {
         Vector3 scale = m_groundTarget.transform.localScale;
         scale.x = scale.z = radius;
         m_groundTarget.transform.localScale = scale * 2.0f;
+        m_groundTarget.color = playerDescription.color;
 
         GameObject UI = GameObject.Find("_UI");
         m_castTimerText = Instantiate(textPrefab);
@@ -62,6 +63,8 @@ public class FireballPower : Power {
         {
             case CastState.Preparing:
                 {
+                    Vector2 direction = playerDescription.input.GetDirection();
+
                     // UPDATE TARGET
                     if (direction.magnitude > Mathf.Epsilon)
                     {

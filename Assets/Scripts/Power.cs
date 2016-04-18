@@ -12,7 +12,7 @@ public class Power : MonoBehaviour {
     };
 
     public GameObject source;
-    public Vector2 direction;
+    public PlayerDescription playerDescription;
 
     public CastState GetCastState() { return m_state; }
     protected CastState m_state;
