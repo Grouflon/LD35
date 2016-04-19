@@ -62,6 +62,7 @@ public class FleshToStonePower : Power {
         {
             case CastState.Preparing:
                 {
+                    Vector2 direction = playerDescription.input.GetDirection();
                     // UPDATE TARGET
                     if (direction.magnitude > Mathf.Epsilon)
                     {
