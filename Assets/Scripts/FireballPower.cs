@@ -42,23 +42,16 @@ public class FireballPower : Power {
         m_castTimerText.rectTransform.SetParent(UI.transform);
         //m_castTimerText.fontSize = 30;
         m_castTimerText.fontStyle = FontStyle.Bold;
+
+        m_headAnimator = playerDescription.chariot.transform.Find("_graphic").Find("_head").GetComponent<Animator>();
+        m_timer = 0.0f;
     }
 	
 	void Update()
     {
         // UPDATE TIME
-        m_castTimer += Time.deltaTime;
-        if (m_castTimer > castTime)
-        {
-            m_state = CastState.Casting;
-            if (m_castTimerText != null)
-            {
-                GameObject.Destroy(m_castTimerText.gameObject);
-                m_castTimerText = null;
-            }
-        }
-
-
+        m_timer += Time.deltaTime;
+        
         switch (m_state)
         {
             case CastState.Preparing:
@@ -93,29 +86,50 @@ public class FireballPower : Power {
                     {
                         Vector3 screenPoint = Camera.main.WorldToScreenPoint(m_target);
                         m_castTimerText.rectTransform.position = screenPoint;
-                        m_castTimerText.text = "" + (int)Mathf.Ceil(castTime - m_castTimer);
+                        m_castTimerText.text = "" + (int)Mathf.Ceil(castTime - m_timer);
                     }
 
-                    m_groundTarget.angularSpeed = (targetEndSpeed - targetStartSpeed) * (m_castTimer / castTime);
+                    m_groundTarget.angularSpeed = (targetEndSpeed - targetStartSpeed) * (m_timer / castTime);
                     Vector3 targetPosition = m_groundTarget.transform.position;
                     targetPosition = m_target;
                     targetPosition.y = 0.01f;
                     m_groundTarget.transform.position = targetPosition;
+
+                    if (m_timer > castTime - 2.0f)
+                    {
+                        m_headAnimator.SetTrigger("Fireball");
+                    }
+
+                    if (m_timer > castTime)
+                    {
+                        m_timer = 0.0f;
+                        if (m_castTimerText != null)
+                        {
+                            GameObject.Destroy(m_castTimerText.gameObject);
+                            m_castTimerText = null;
+                        }
+
+                        Vector3 sourcePosition = source.transform.position;
+                        sourcePosition.y = 0.0f;
+                        GameObject projectileInstance = (GameObject)GameObject.Instantiate(projectilePrefab.gameObject, sourcePosition, Quaternion.identity);
+                        FireballProjectileController projectileController = projectileInstance.GetComponent<FireballProjectileController>();
+                        projectileController.target = m_target;
+                        projectileInstance.transform.localScale = new Vector3(radius, radius, radius) * 2.0f;
+
+                        m_groundTarget.FadeOut(projectileController.flightTime + 0.5f);
+                        m_state = CastState.Casting;
+                        m_headAnimator.ResetTrigger("Fireball");
+                    }
                 }
                 break;
 
             case CastState.Casting:
                 {
-                    Vector3 sourcePosition = source.transform.position;
-                    sourcePosition.y = 0.0f;
-                    GameObject projectileInstance = (GameObject)GameObject.Instantiate(projectilePrefab.gameObject, sourcePosition, Quaternion.identity);
-                    FireballProjectileController projectileController = projectileInstance.GetComponent<FireballProjectileController>();
-                    projectileController.target = m_target;
-                    projectileInstance.transform.localScale = new Vector3(radius, radius, radius) * 2.0f;
-
-                    m_groundTarget.FadeOut(projectileController.flightTime + 0.5f);
-
-                    m_state = CastState.Finished;
+                    if (m_timer > projectilePrefab.flightTime)
+                    {
+                        m_state = CastState.Finished;
+                        m_headAnimator.SetTrigger("Idle");
+                    }
                 }
                 break;
 
@@ -124,9 +138,11 @@ public class FireballPower : Power {
         }
 	}
 
-    private float m_castTimer = 0.0f;
+
+    private float m_timer = 0.0f;
     private Vector2 m_targetVelocity;
     private Vector3 m_target;
     private Text m_castTimerText;
     private GroundTargetController m_groundTarget;
+    private Animator m_headAnimator;
 }

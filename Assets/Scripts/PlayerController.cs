@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour {
 	void Start ()
     {
         m_powerManager = FindObjectOfType<PowerManager>();
-	}
+        m_headAnimator = playerDescription.chariot.transform.Find("_graphic").Find("_head").GetComponent<Animator>();
+    }
 	
 	void Update ()
     {
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour {
             {
                 GameObject.Destroy(m_currentPower.gameObject);
                 m_currentPower = null;
+                m_headAnimator.ResetTrigger("Idle");
             }
         }
         else
@@ -39,4 +41,5 @@ public class PlayerController : MonoBehaviour {
     private float m_recoverTimer = 0.0f;
     private PowerManager m_powerManager;
     private Power m_currentPower = null;
+    private Animator m_headAnimator;
 }
