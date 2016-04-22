@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour {
 
             if (m_recoverTimer > recoverTime)
             {
-                m_currentPower = GameObject.Instantiate(m_powerManager.powerTemplates[0]);
+                int powerId = Random.Range(0, m_powerManager.powerTemplates.Length - 1);
+                m_currentPower = GameObject.Instantiate(m_powerManager.powerTemplates[powerId]);
                 m_currentPower.playerDescription = playerDescription;
                 m_currentPower.source = playerDescription.chariot.gameObject;
                 m_recoverTimer = 0.0f;
