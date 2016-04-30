@@ -110,7 +110,7 @@ public class Container2dLoop : MonoBehaviour
 			source.volume -= Time.deltaTime * ((1/fadeOutTime) * targetVolume);
 		}
 
-		//TEST KEYS
+		/*TEST KEYS
 		if (Input.GetKeyDown(KeyCode.A))
 			Play();
 
@@ -119,6 +119,6 @@ public class Container2dLoop : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.E))
 			Debug.Log(isPlaying());
-	
+		*/
 	}
 }
