@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(AudioSource))]
 public class Container2dLoop : MonoBehaviour 
 {
+	[Header ("REFERENCES")]
+	public AudioClip clip;
+	public GameObject audioSourcePrefab;
+
 	[Header("PARAMETERS")]
 	[Range (0,15)]
 	public float fadeInTime;
@@ -19,19 +22,23 @@ public class Container2dLoop : MonoBehaviour
 
 
 	// Sets the initial conditions for this container to play properly
-	void Awake()
+	void Start()
 	{
-		source = gameObject.GetComponent<AudioSource> ();
+		GameObject sourceObject = (GameObject)Instantiate(audioSourcePrefab, transform.position, transform.rotation);
+		sourceObject.name = "Container2DLoop : " + sourceObject.name;
+		sourceObject.transform.parent = gameObject.transform;
+		source = sourceObject.GetComponent<AudioSource>();
+		source.clip = clip;
+
 		if (source.playOnAwake == true)
 			Debug.LogError ("PlayOnAwake is active on Container2DLoop " + gameObject.name);
 		if (source.clip == null)
 			Debug.LogError ("No AudioClip is set on Container2dLoop " + gameObject.name);
 		if (source.loop == false)
 			source.loop = true;
-		
+	
 		targetVolume = source.volume;
 		source.volume = 0f;
-
 	}
 
 	// Plays the AudioSource with specifics start behaviours
@@ -103,7 +110,7 @@ public class Container2dLoop : MonoBehaviour
 			source.volume -= Time.deltaTime * ((1/fadeOutTime) * targetVolume);
 		}
 
-		/*TEST KEYS
+		//TEST KEYS
 		if (Input.GetKeyDown(KeyCode.A))
 			Play();
 
@@ -112,6 +119,6 @@ public class Container2dLoop : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.E))
 			Debug.Log(isPlaying());
-		*/
+	
 	}
 }
