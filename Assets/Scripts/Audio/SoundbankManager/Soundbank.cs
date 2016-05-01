@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Soundbank : MonoBehaviour 
 {
-	public string name;
+	public new string name;
 	public List<AudioClip> audioClips;
 	public bool isLoaded = false;
 
